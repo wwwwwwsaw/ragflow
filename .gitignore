@@ -18,10 +18,10 @@ Cargo.lock
 # MSVC Windows builds of rustc generate these, which store debugging information
 *.pdb
 *.trie
-
+.venv/
 .idea/
 .vscode/
-
+.history/
 # Exclude Mac generated files
 .DS_Store
 

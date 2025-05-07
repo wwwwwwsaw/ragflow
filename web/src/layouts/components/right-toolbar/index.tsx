@@ -1,5 +1,5 @@
 import { useTranslate } from '@/hooks/common-hooks';
-import { DownOutlined, GithubOutlined } from '@ant-design/icons';
+import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, MenuProps, Space } from 'antd';
 import camelCase from 'lodash/camelCase';
 import React, { useCallback, useMemo } from 'react';
@@ -77,9 +77,7 @@ const RightToolBar = () => {
             <DownOutlined />
           </Space>
         </Dropdown>
-        <Circle>
-          <GithubOutlined onClick={handleGithubCLick} />
-        </Circle>
+        <Circle>{/* <GithubOutlined onClick={handleGithubCLick} /> */}</Circle>
         <Circle>
           <CircleHelp className="size-4" onClick={handleDocHelpCLick} />
         </Circle>

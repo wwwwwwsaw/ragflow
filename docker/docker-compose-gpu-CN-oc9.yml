@@ -11,7 +11,7 @@ services:
     image: edwardelric233/ragflow:oc9
     container_name: ragflow-server
     ports:
-      - ${SVR_HTTP_PORT}:9380
+      - ${SVR_HTTP_PORT}:9388
       - 80:80
       - 443:443
     volumes:

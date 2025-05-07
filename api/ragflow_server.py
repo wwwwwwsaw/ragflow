@@ -17,7 +17,11 @@
 # from beartype import BeartypeConf
 # from beartype.claw import beartype_all  # <-- you didn't sign up for this
 # beartype_all(conf=BeartypeConf(violation_type=UserWarning))    # <-- emit warnings from all code
-
+import sys
+import os
+root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(root)
+print(root)
 from api.utils.log_utils import initRootLogger
 initRootLogger("ragflow_server")
 

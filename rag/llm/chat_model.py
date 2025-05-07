@@ -361,7 +361,8 @@ class Base(ABC):
 
                 tol = self.total_token_count(resp)
                 if not tol:
-                    total_tokens += num_tokens_from_string(resp.choices[0].delta.content)
+                    total_tokens += num_tokens_from_string(
+                        resp.choices[0].delta.content)
                 else:
                     total_tokens += tol
 
@@ -476,10 +477,17 @@ class DeepSeekChat(Base):
 
 class AzureChat(Base):
     def __init__(self, key, model_name, **kwargs):
+<<<<<<< Updated upstream
         api_key = json.loads(key).get("api_key", "")
         api_version = json.loads(key).get("api_version", "2024-02-01")
         super().__init__(key, model_name, kwargs["base_url"])
         self.client = AzureOpenAI(api_key=api_key, azure_endpoint=kwargs["base_url"], api_version=api_version)
+=======
+        api_key = json.loads(key).get('api_key', '')
+        api_version = json.loads(key).get('api_version', '2024-02-01')
+        self.client = AzureOpenAI(
+            api_key=api_key, azure_endpoint=kwargs["base_url"], api_version=api_version)
+>>>>>>> Stashed changes
         self.model_name = model_name
 
 
@@ -541,7 +549,8 @@ class BaiChuanChat(Base):
                 ans = resp.choices[0].delta.content
                 tol = self.total_token_count(resp)
                 if not tol:
-                    total_tokens += num_tokens_from_string(resp.choices[0].delta.content)
+                    total_tokens += num_tokens_from_string(
+                        resp.choices[0].delta.content)
                 else:
                     total_tokens = tol
                 if resp.choices[0].finish_reason == "length":
@@ -646,7 +655,12 @@ class QWenChat(Base):
         if self.is_reasoning_model(self.model_name) or self.model_name in ["qwen-vl-plus", "qwen-vl-plus-latest", "qwen-vl-max", "qwen-vl-max-latest"]:
             return super().chat(system, history, gen_conf)
 
+<<<<<<< Updated upstream
         stream_flag = str(os.environ.get("QWEN_CHAT_BY_STREAM", "true")).lower() == "true"
+=======
+        stream_flag = str(os.environ.get(
+            'QWEN_CHAT_BY_STREAM', 'true')).lower() == 'true'
+>>>>>>> Stashed changes
         if not stream_flag:
             from http import HTTPStatus
 
@@ -668,9 +682,11 @@ class QWenChat(Base):
 
             return "**ERROR**: " + response.message, tk_count
         else:
-            g = self._chat_streamly(system, history, gen_conf, incremental_output=True)
+            g = self._chat_streamly(
+                system, history, gen_conf, incremental_output=True)
             result_list = list(g)
-            error_msg_list = [item for item in result_list if str(item).find("**ERROR**") >= 0]
+            error_msg_list = [item for item in result_list if str(
+                item).find("**ERROR**") >= 0]
             if len(error_msg_list) > 0:
                 return "**ERROR**: " + "".join(error_msg_list), 0
             else:
@@ -893,7 +909,11 @@ class OllamaChat(Base):
 
         self.client = Client(host=kwargs["base_url"]) if not key or key == "x" else Client(host=kwargs["base_url"], headers={"Authorization": f"Bearer {key}"})
         self.model_name = model_name
+    # 返回ollama模型
+    def get_models(self):
+        self.client.list()
 
+        return 
     def chat(self, system, history, gen_conf):
         if system:
             history.insert(0, {"role": "system", "content": system})
@@ -914,8 +934,18 @@ class OllamaChat(Base):
                 options["presence_penalty"] = gen_conf["presence_penalty"]
             if "frequency_penalty" in gen_conf:
                 options["frequency_penalty"] = gen_conf["frequency_penalty"]
+<<<<<<< Updated upstream
 
             response = self.client.chat(model=self.model_name, messages=history, options=options, keep_alive=10)
+=======
+            print(options, self.model_name)
+            response = self.client.chat(
+                model=self.model_name,
+                messages=history,
+                options=options,
+                keep_alive=-1
+            )
+>>>>>>> Stashed changes
             ans = response["message"]["content"].strip()
             token_count = response.get("eval_count", 0) + response.get("prompt_eval_count", 0)
             return ans, token_count
@@ -989,7 +1019,8 @@ class LocalLLM(Base):
             def do_rpc(*args, **kwargs):
                 for _ in range(3):
                     try:
-                        self._connection.send(pickle.dumps((name, args, kwargs)))
+                        self._connection.send(
+                            pickle.dumps((name, args, kwargs)))
                         return pickle.loads(self._connection.recv())
                     except Exception:
                         self.__conn()
@@ -1053,9 +1084,16 @@ class VolcEngineChat(Base):
         Assemble ark_api_key, ep_id into api_key, store it as a dictionary type, and parse it for use
         model_name is for display only
         """
+<<<<<<< Updated upstream
         base_url = base_url if base_url else "https://ark.cn-beijing.volces.com/api/v3"
         ark_api_key = json.loads(key).get("ark_api_key", "")
         model_name = json.loads(key).get("ep_id", "") + json.loads(key).get("endpoint_id", "")
+=======
+        base_url = base_url if base_url else 'https://ark.cn-beijing.volces.com/api/v3'
+        ark_api_key = json.loads(key).get('ark_api_key', '')
+        model_name = json.loads(key).get('ep_id', '') + \
+            json.loads(key).get('endpoint_id', '')
+>>>>>>> Stashed changes
         super().__init__(ark_api_key, model_name, base_url)
 
 
@@ -1210,11 +1248,20 @@ class BedrockChat(Base):
         self.bedrock_region = json.loads(key).get("bedrock_region", "")
         self.model_name = model_name
 
+<<<<<<< Updated upstream
         if self.bedrock_ak == "" or self.bedrock_sk == "" or self.bedrock_region == "":
+=======
+        if self.bedrock_ak == '' or self.bedrock_sk == '' or self.bedrock_region == '':
+>>>>>>> Stashed changes
             # Try to create a client using the default credentials (AWS_PROFILE, AWS_DEFAULT_REGION, etc.)
             self.client = boto3.client("bedrock-runtime")
         else:
+<<<<<<< Updated upstream
             self.client = boto3.client(service_name="bedrock-runtime", region_name=self.bedrock_region, aws_access_key_id=self.bedrock_ak, aws_secret_access_key=self.bedrock_sk)
+=======
+            self.client = boto3.client(service_name='bedrock-runtime', region_name=self.bedrock_region,
+                                       aws_access_key_id=self.bedrock_ak, aws_secret_access_key=self.bedrock_sk)
+>>>>>>> Stashed changes
 
     def chat(self, system, history, gen_conf):
         from botocore.exceptions import ClientError
@@ -1232,7 +1279,8 @@ class BedrockChat(Base):
                 modelId=self.model_name,
                 messages=history,
                 inferenceConfig=gen_conf,
-                system=[{"text": (system if system else "Answer the user's message.")}],
+                system=[
+                    {"text": (system if system else "Answer the user's message.")}],
             )
 
             # Extract and print the response text.
@@ -1254,7 +1302,17 @@ class BedrockChat(Base):
 
         if self.model_name.split(".")[0] == "ai21":
             try:
+<<<<<<< Updated upstream
                 response = self.client.converse(modelId=self.model_name, messages=history, inferenceConfig=gen_conf, system=[{"text": (system if system else "Answer the user's message.")}])
+=======
+                response = self.client.converse(
+                    modelId=self.model_name,
+                    messages=history,
+                    inferenceConfig=gen_conf,
+                    system=[
+                        {"text": (system if system else "Answer the user's message.")}]
+                )
+>>>>>>> Stashed changes
                 ans = response["output"]["message"]["content"][0]["text"]
                 return ans, num_tokens_from_string(ans)
 
@@ -1265,7 +1323,15 @@ class BedrockChat(Base):
         try:
             # Send the message to the model, using a basic inference configuration.
             streaming_response = self.client.converse_stream(
+<<<<<<< Updated upstream
                 modelId=self.model_name, messages=history, inferenceConfig=gen_conf, system=[{"text": (system if system else "Answer the user's message.")}]
+=======
+                modelId=self.model_name,
+                messages=history,
+                inferenceConfig=gen_conf,
+                system=[
+                    {"text": (system if system else "Answer the user's message.")}]
+>>>>>>> Stashed changes
             )
 
             # Extract and print the streamed response text in real-time.
@@ -1398,7 +1464,7 @@ class GroqChat(Base):
         yield total_tokens
 
 
-## openrouter
+# openrouter
 class OpenRouterChat(Base):
     def __init__(self, key, model_name, base_url="https://openrouter.ai/api/v1"):
         if not base_url:
@@ -1524,7 +1590,8 @@ class CoHereChat(Base):
 class LeptonAIChat(Base):
     def __init__(self, key, model_name, base_url=None):
         if not base_url:
-            base_url = os.path.join("https://" + model_name + ".lepton.run", "api", "v1")
+            base_url = os.path.join(
+                "https://" + model_name + ".lepton.run", "api", "v1")
         super().__init__(key, model_name, base_url)
 
 
@@ -1590,7 +1657,8 @@ class ReplicateChat(Base):
         try:
             response = self.client.run(
                 self.model_name,
-                input={"system_prompt": self.system, "prompt": prompt, **gen_conf},
+                input={"system_prompt": self.system,
+                       "prompt": prompt, **gen_conf},
             )
             ans = "".join(response)
             return ans, num_tokens_from_string(ans)
@@ -1607,7 +1675,8 @@ class ReplicateChat(Base):
         try:
             response = self.client.run(
                 self.model_name,
-                input={"system_prompt": self.system, "prompt": prompt, **gen_conf},
+                input={"system_prompt": self.system,
+                       "prompt": prompt, **gen_conf},
             )
             for resp in response:
                 ans = resp
@@ -1640,7 +1709,8 @@ class HunyuanChat(Base):
         from tencentcloud.hunyuan.v20230901 import models
 
         _gen_conf = {}
-        _history = [{k.capitalize(): v for k, v in item.items()} for item in history]
+        _history = [{k.capitalize(): v for k, v in item.items()}
+                    for item in history]
         if system:
             _history.insert(0, {"Role": "system", "Content": system})
         if "max_tokens" in gen_conf:
@@ -1668,7 +1738,8 @@ class HunyuanChat(Base):
         from tencentcloud.hunyuan.v20230901 import models
 
         _gen_conf = {}
-        _history = [{k.capitalize(): v for k, v in item.items()} for item in history]
+        _history = [{k.capitalize(): v for k, v in item.items()}
+                    for item in history]
         if system:
             _history.insert(0, {"Role": "system", "Content": system})
         if "max_tokens" in gen_conf:
@@ -1740,7 +1811,14 @@ class BaiduYiyanChat(Base):
     def chat(self, system, history, gen_conf):
         if system:
             self.system = system
+<<<<<<< Updated upstream
         gen_conf["penalty_score"] = ((gen_conf.get("presence_penalty", 0) + gen_conf.get("frequency_penalty", 0)) / 2) + 1
+=======
+        gen_conf["penalty_score"] = (
+            (gen_conf.get("presence_penalty", 0) + gen_conf.get("frequency_penalty",
+                                                                0)) / 2
+        ) + 1
+>>>>>>> Stashed changes
         if "max_tokens" in gen_conf:
             del gen_conf["max_tokens"]
         ans = ""
@@ -1756,7 +1834,14 @@ class BaiduYiyanChat(Base):
     def chat_streamly(self, system, history, gen_conf):
         if system:
             self.system = system
+<<<<<<< Updated upstream
         gen_conf["penalty_score"] = ((gen_conf.get("presence_penalty", 0) + gen_conf.get("frequency_penalty", 0)) / 2) + 1
+=======
+        gen_conf["penalty_score"] = (
+            (gen_conf.get("presence_penalty", 0) + gen_conf.get("frequency_penalty",
+                                                                0)) / 2
+        ) + 1
+>>>>>>> Stashed changes
         if "max_tokens" in gen_conf:
             del gen_conf["max_tokens"]
         ans = ""
@@ -1812,7 +1897,8 @@ class AnthropicChat(Base):
                 ans += "...\nFor the content length reason, it stopped, continue?" if is_english([ans]) else "······\n由于长度的原因，回答被截断了，要继续吗？"
             return (
                 ans,
-                response["usage"]["input_tokens"] + response["usage"]["output_tokens"],
+                response["usage"]["input_tokens"] +
+                response["usage"]["output_tokens"],
             )
         except Exception as e:
             return ans + "\n**ERROR**: " + str(e), 0
@@ -1887,7 +1973,8 @@ class GoogleChat(Base):
                 token = credits.token
                 self.client = AnthropicVertex(region=region, project_id=project_id, access_token=token)
             else:
-                self.client = AnthropicVertex(region=region, project_id=project_id)
+                self.client = AnthropicVertex(
+                    region=region, project_id=project_id)
         else:
             import vertexai.generative_models as glm
             from google.cloud import aiplatform

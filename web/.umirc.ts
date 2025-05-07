@@ -38,8 +38,14 @@ export default defineConfig({
   proxy: [
     {
       context: ['/api', '/v1'],
-      target: 'http://127.0.0.1:9380/',
+      // target: 'http://127.0.0.1:9380/',  // 本地调试
+      // target: 'http://192.168.100.23:9382/',
+
+      target: 'http://192.168.125.47', // 远程服务器
+      // http://192.168.100.23/apiv1/v1
+
       changeOrigin: true,
+      pathRewrite: { '^/apiv1': '' }, // 移除请求中的/apiv1前缀
       ws: true,
       logger: console,
       // pathRewrite: { '^/v1': '/v1' },

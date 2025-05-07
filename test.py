@@ -1,0 +1,1 @@
+/mnt/c/Users/Administrator/Downloads/PyICU-2.14-cp310-cp310-win_amd64.whl

@@ -64,6 +64,7 @@ cleanup() {
   exit 0
 }
 
+echo "Termination signal received. Shutting down..."
 # Trap SIGINT and SIGTERM to invoke cleanup
 trap cleanup SIGINT SIGTERM
 

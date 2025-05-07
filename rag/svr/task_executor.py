@@ -16,18 +16,28 @@
 # from beartype import BeartypeConf
 # from beartype.claw import beartype_all  # <-- you didn't sign up for this
 # beartype_all(conf=BeartypeConf(violation_type=UserWarning))    # <-- emit warnings from all code
+<<<<<<< Updated upstream
 import random
 import sys
 import threading
 import time
+=======
+>>>>>>> Stashed changes
 
+import sys
+import os
+root = os.path.dirname(os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__))))
+print(root)
+sys.path.append(root)
+
+import random
 from api.utils.log_utils import initRootLogger, get_project_base_directory
 from graphrag.general.index import run_graphrag
 from graphrag.utils import get_llm_cache, set_llm_cache, get_tags_from_cache, set_tags_to_cache
 from rag.prompts import keyword_extraction, question_proposal, content_tagging
 
 import logging
-import os
 from datetime import datetime
 import json
 import xxhash
