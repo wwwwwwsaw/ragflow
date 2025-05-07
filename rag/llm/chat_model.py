@@ -477,12 +477,11 @@ class DeepSeekChat(Base):
 
 class AzureChat(Base):
     def __init__(self, key, model_name, **kwargs):
-<<<<<<< Updated upstream
+
         api_key = json.loads(key).get("api_key", "")
         api_version = json.loads(key).get("api_version", "2024-02-01")
         super().__init__(key, model_name, kwargs["base_url"])
         self.client = AzureOpenAI(api_key=api_key, azure_endpoint=kwargs["base_url"], api_version=api_version)
-=======
         api_key = json.loads(key).get('api_key', '')
         api_version = json.loads(key).get('api_version', '2024-02-01')
         self.client = AzureOpenAI(
@@ -1256,12 +1255,11 @@ class BedrockChat(Base):
             # Try to create a client using the default credentials (AWS_PROFILE, AWS_DEFAULT_REGION, etc.)
             self.client = boto3.client("bedrock-runtime")
         else:
-<<<<<<< Updated upstream
+
             self.client = boto3.client(service_name="bedrock-runtime", region_name=self.bedrock_region, aws_access_key_id=self.bedrock_ak, aws_secret_access_key=self.bedrock_sk)
 =======
             self.client = boto3.client(service_name='bedrock-runtime', region_name=self.bedrock_region,
                                        aws_access_key_id=self.bedrock_ak, aws_secret_access_key=self.bedrock_sk)
->>>>>>> Stashed changes
 
     def chat(self, system, history, gen_conf):
         from botocore.exceptions import ClientError
@@ -1834,14 +1832,13 @@ class BaiduYiyanChat(Base):
     def chat_streamly(self, system, history, gen_conf):
         if system:
             self.system = system
-<<<<<<< Updated upstream
         gen_conf["penalty_score"] = ((gen_conf.get("presence_penalty", 0) + gen_conf.get("frequency_penalty", 0)) / 2) + 1
 =======
         gen_conf["penalty_score"] = (
             (gen_conf.get("presence_penalty", 0) + gen_conf.get("frequency_penalty",
                                                                 0)) / 2
         ) + 1
->>>>>>> Stashed changes
+
         if "max_tokens" in gen_conf:
             del gen_conf["max_tokens"]
         ans = ""
