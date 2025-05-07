@@ -1,0 +1,59 @@
+.chatWrapper {
+  height: 100%;
+}
+
+.chatContainer {
+  padding: 0px;
+  box-sizing: border-box;
+  height: 100%;
+
+  .messageContainer {
+    overflow-y: auto;
+    // padding-right: 6px;
+    padding: 6px 10px 10px 20px;
+    background-color: #faf2ff;
+  }
+
+  .footSender {
+    background-color: #ffffff;
+    padding: 5px 0vh 5px 0vh;
+  }
+}
+
+.messageInputWrapper {
+  // margin: 10px 20px 10px 10px;
+  margin: 5px 18px;
+  // margin-right: 20px;
+  background-color: #faf2ff;
+  // background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+
+  :global(.ant-input-affix-wrapper) {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .documentCard {
+    :global(.ant-card-body) {
+      padding: 10px;
+      position: relative;
+    }
+  }
+
+  .listWrapper {
+    padding: 0 10px;
+    overflow: auto;
+    max-height: 170px;
+  }
+
+  .inputWrapper {
+    border-radius: 8px;
+  }
+
+  .deleteIcon {
+    position: absolute;
+    right: -4px;
+    top: -4px;
+    color: #d92d20;
+  }
+}
